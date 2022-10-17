@@ -1,7 +1,7 @@
 # Existenz API Fetcher
 
-This package is designed to automate the loading and use of data from the MeteoSwiss Federal Office 
-and the Federal Office for the Environment (FOEN) and is built on top of Christian Studer's ExistenzAPIs (https://api.existenz.ch/).
+This package is designed to automate the loading and use of sensor data from the MeteoSwiss Federal Office's
+and the Federal Office for the Environment's (FOEN) networks of stations and is built on top of Christian Studer's ExistenzAPIs (https://api.existenz.ch/).
 
 Data is obtained by querying a two-year, daily time series from the InfluxDB database and is returned in the form of a `pandas` dataframe.
 Functions to compute potential evapotranspiration using the `pyet` module have been implemented.
