@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-import existenz_api_fetcher.meteo as ef
+import existenz_api_fetcher as ef
 
 
 class Test(TestCase):

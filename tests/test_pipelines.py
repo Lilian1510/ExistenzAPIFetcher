@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from existenz_api_fetcher import meteo, pipelines
+from existenz_api_fetcher import pipelines, meteo
 
 
 class Test(TestCase):
