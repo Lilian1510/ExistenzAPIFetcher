@@ -1,4 +1,4 @@
-# :water: Existenz API Fetcher
+# :droplet: Existenz API Fetcher
 
 This package is designed to automate the loading and use of sensor data from the MeteoSwiss Federal Office's
 and the Federal Office for the Environment's (FOEN) networks of stations and is built on top of Christian Studer's ExistenzAPIs (https://api.existenz.ch/).
