@@ -1,13 +1,12 @@
 import pandas as pd
 
-"""
-Function to geolocate MeteoSwiss or FOEN hydrology stations.
-Args: station code (str)
-Returns: list with latitude, longitude, elevation (x, y, z) for MeteoSwiss and latitude, longitude (x, y) for FOEN
-"""
-
 
 def geolocate(station: str) -> list:
+    """
+    Function to geolocate MeteoSwiss or FOEN hydrology stations.
+    Args: station code (str)
+    Returns: list with latitude, longitude, elevation (x, y, z) for MeteoSwiss and latitude, longitude (x, y) for FOEN
+    """
     meteo_df = pd.read_csv('https://api-datasette.konzept.space/existenz-api/smn_locations.csv?_size=max')
     hydro_df = pd.read_csv('https://api-datasette.konzept.space/existenz-api/hydro_locations.csv?_size=max')
 
@@ -21,12 +20,10 @@ def geolocate(station: str) -> list:
         print("Please enter a valid station code.")
 
 
-"""
-Function to help find the station code using a map.
-Prints two clickable links, one for the MeteoSwiss stations, one for the FOEN ones
-"""
-
-
 def maps():
+    """
+    Function to help find the station code using a map.
+    Prints two clickable links, one for the MeteoSwiss stations, one for the FOEN ones
+    """
     print("https://api-datasette.konzept.space/existenz-api/smn_locations")
     print("https://api-datasette.konzept.space/existenz-api/hydro_locations")

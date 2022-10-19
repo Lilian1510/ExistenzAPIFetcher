@@ -16,15 +16,13 @@ token = "0yLbh-D7RMe1sX1iIudFel8CcqCI8sVfuRTaliUp56MgE6kub8-nSd05_EJ4zTTKt0lUzw8
 client = InfluxDBClient(url=url, token=token, org=org)
 query_api = client.query_api()
 
-"""
-Functions to fetch weather data from the Existenz API InfluxDB database. The last 2 years of data are available.
-Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info
-Returns: DataFrame with a datetime index
-"""
-
 
 def rainfall(station: str):
-    # Rainfall [mm/day]
+    """
+    Returns 2 years of rainfall [mm/day] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     rr_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                        '|> range(start: -2y)'
                                        '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -38,7 +36,11 @@ def rainfall(station: str):
 
 
 def temperature(station: str):
-    # Mean temperature [°C]
+    """
+    Returns 2 years of mean temperature [°C] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     tt_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                        '|> range(start: -2y)'
                                        '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -52,7 +54,11 @@ def temperature(station: str):
 
 
 def min_temperature(station: str):
-    # Minimum temperature[°C]
+    """
+    Returns 2 years of minimum temperature [°C] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     mintt_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                           '|> range(start: -2y)'
                                           '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -66,6 +72,11 @@ def min_temperature(station: str):
 
 
 def max_temperature(station: str):
+    """
+    Returns 2 years of maximum temperature [°C] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     # Maximum temperature[°C]
     maxtt_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                           '|> range(start: -2y)'
@@ -80,7 +91,11 @@ def max_temperature(station: str):
 
 
 def humidity(station: str):
-    # Relative humidity [%]
+    """
+    Returns 2 years of relative humidity [%] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     rh_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                        '|> range(start: -2y)'
                                        '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -93,7 +108,11 @@ def humidity(station: str):
 
 
 def wind_speed(station: str):
-    # Wind speed [km/h]
+    """
+    Returns 2 years of wind speed [km/h] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     ff_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                        '|> range(start: -2y) '
                                        '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -107,7 +126,11 @@ def wind_speed(station: str):
 
 
 def radiation(station: str):
-    # Radiation intensity [W/m2]
+    """
+    Returns 2 years of radiation intensity [W/m2] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     rad_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                         '|> range(start: -2y) '
                                         '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -121,7 +144,11 @@ def radiation(station: str):
 
 
 def pressure(station: str):
-    # Pressure at station level [hPa]
+    """
+    Returns 2 years of pressure at station level [hPa] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     qfe_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                         '|> range(start: -2y) '
                                         '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -135,7 +162,11 @@ def pressure(station: str):
 
 
 def sunshine_duration(station: str):
-    # Sunshine duration [min]
+    """
+    Returns 2 years of sunshine duration [min] data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     ss_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                        '|> range(start: -2y) '
                                        '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -149,7 +180,11 @@ def sunshine_duration(station: str):
 
 
 def dew_point(station: str):
-    # Dew point 2 m above ground
+    """
+    Returns 2 years of dew point (2 m above ground) data in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+    Returns: DataFrame with a datetime index
+    """
     td_df = query_api.query_data_frame('from(bucket: "existenzApi")'
                                        '|> range(start: -2y) '
                                        '|> filter(fn: (r) => r["_measurement"] == "smn")'
@@ -162,13 +197,13 @@ def dew_point(station: str):
     return td_df
 
 
-"""
-Potential evapotranspiration functions need the station elevation and latitude to compute evapotranspiration.
-Please see the locations.find() function for more info
-"""
-
-
 def ev_penman(station: str, elevation: int, lat: float):
+    """
+    Returns 2 years of potential evapotranspiration data (computed according to Penman (1948)) in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+          Station elevation (int), station latitude (float). Use the locations.geolocate() function to find these parameters.
+    Returns: DataFrame with a datetime index
+    """
     penman_df = pipelines.compute(radiation(station))
     if penman_df is None:
         return None
@@ -184,6 +219,12 @@ def ev_penman(station: str, elevation: int, lat: float):
 
 
 def ev_penman_monteith(station: str, elevation: int, lat: float):
+    """
+    Returns 2 years of potential evapotranspiration data (computed according to Monteith (1965)) in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+          Station elevation (int), station latitude (float). Use the locations.geolocate() function to find these parameters.
+    Returns: DataFrame with a datetime index
+    """
     pm_df = pipelines.compute(radiation(station))
     if pm_df is None:
         return None
@@ -199,6 +240,12 @@ def ev_penman_monteith(station: str, elevation: int, lat: float):
 
 
 def ev_fao56(station: str, elevation: int, lat: float):
+    """
+    Returns 2 years of potential evapotranspiration data (computed according to Allen et al. (1998)) in the form of a pandas dataframe.
+    Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
+          Station elevation (int), station latitude (float). Use the locations.geolocate() function to find these parameters.
+    Returns: DataFrame with a datetime index
+    """
     fao_df = pipelines.compute(radiation(station))
     if fao_df is None:
         return None

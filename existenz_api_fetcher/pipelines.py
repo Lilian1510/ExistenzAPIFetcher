@@ -2,14 +2,13 @@ from functools import reduce
 
 import pandas as pd
 
-"""
-Functions designed to batch-process a DataFrame to make it easier to use.
-Args: DataFrame
-Return: Processed Dataframe
-"""
-
 
 def preprocess(df):
+    """
+    Batch processes a DataFrame to make it easier to use.
+    Args: DataFrame
+    Return: Processed Dataframe
+    """
     if df.empty:
         return None
     else:
@@ -21,6 +20,11 @@ def preprocess(df):
 
 
 def compute(df):
+    """
+    Generates a dataframe from an existing one.
+    Args: DataFrame
+    Return: New Dataframe
+    """
     if df is None:
         return None
     else:
@@ -31,14 +35,12 @@ def compute(df):
         return new_df
 
 
-"""
-Function to merge DataFrames.
-*Args: Dataframes
-Returns: DataFrame with DateTime index and all parameters as columns
-"""
-
-
 def merge(*args):
+    """
+    Function to merge DataFrames.
+    *Args: Dataframes
+    Returns: DataFrame with DateTime index and all parameters as columns
+    """
     if len(args) == 1:
         return args[0]
     else:

@@ -15,15 +15,13 @@ token = "0yLbh-D7RMe1sX1iIudFel8CcqCI8sVfuRTaliUp56MgE6kub8-nSd05_EJ4zTTKt0lUzw8
 client = InfluxDBClient(url=url, token=token, org=org)
 query_api = client.query_api()
 
-"""
-Functions to fetch hydrological data from the Existenz API InfluxDB database. The last 2 years of data are available.
-Args: FOEN station code (str). Use the locations.map() function to open a map with all the stations for more info
-Returns: DataFrame with a datetime index
-"""
-
 
 def flow(station: str) -> object:
-    # Streamflow [m3/s]
+    """
+    Returns 2 years of streamflow [m3/s] data in the form of a pandas dataframe. Note that not all stations measure streamflow.
+    Args: FOEN station code (str). Use the locations.maps() function to open a map with all the stations for more info
+    Returns: DataFrame with a datetime index
+    """
     flow_df = query_api.query_data_frame('from(bucket:"existenzApi") '
                                          '|> range(start: -2y)'
                                          '|> filter(fn: (r) => r["_measurement"] == "hydro")'
@@ -32,18 +30,16 @@ def flow(station: str) -> object:
                                          '|> aggregateWindow(every: 1d, fn: mean, createEmpty: false)'
                                          '|> yield(name: "mean")'
                                          )
-    print(type(flow_df))
     flow_df = pipelines.preprocess(flow_df)
     return flow_df
 
 
-"""
-Note that not all stations measure surface water temperature.
-"""
-
-
 def temperature(station: str) -> object:
-    # Water temperature [°C]
+    """
+    Returns 2 years of water temperature [°C] data in the form of a pandas dataframe. Note that not all stations measure water temperature.
+    Args: FOEN station code (str). Use the locations.maps() function to open a map with all the stations for more info
+    Returns: DataFrame with a datetime index
+    """
     t_df = query_api.query_data_frame('from(bucket:"existenzApi") '
                                       '|> range(start: -2y)'
                                       '|> filter(fn: (r) => r["_measurement"] == "hydro")'
@@ -61,7 +57,11 @@ def temperature(station: str) -> object:
 
 
 def height(station: str) -> object:
-    # River or lake height [m over sea level]
+    """
+    Returns 2 years of River or lake height [m over sea level] data in the form of a pandas dataframe.
+    Args: FOEN station code (str). Use the locations.maps() function to open a map with all the stations for more info
+    Returns: DataFrame with a datetime index
+    """
     h_df = query_api.query_data_frame('from(bucket:"existenzApi") '
                                       '|> range(start: -2y)'
                                       '|> filter(fn: (r) => r["_measurement"] == "hydro")'
