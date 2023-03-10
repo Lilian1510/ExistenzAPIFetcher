@@ -16,6 +16,9 @@ def preprocess(df):
         df.set_index('_time', inplace=True)  # Set datetime as DataFrame index
         df.index.names = ['DateTime']
         df['_value'] = df['_value'].interpolate(method="time")  # Interpolate missing data
+        df.index = df.index.to_series().apply(lambda x: x.date()) # Removes unnecessary time
+        # Converting the index as date
+        df.index = pd.to_datetime(df.index)
         return df
 
 

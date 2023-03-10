@@ -140,6 +140,8 @@ def radiation(station: str):
                                         '|> yield(name: "mean")'
                                         )
     rad_df = pipelines.preprocess(rad_df)
+    # Convert from W/m2 to MJ/m2/d
+    rad_df['_value'] = rad_df['_value'] * 10e-6 * 60*60*24
     return rad_df
 
 

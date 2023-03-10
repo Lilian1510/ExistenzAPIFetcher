@@ -17,7 +17,7 @@ def geolocate(station: str) -> list:
         result = hydro_df.loc[hydro_df['station_id'] == station]
         return [result['lat'].to_numpy()[0], result['lon'].to_numpy()[0]]
     else:
-        print("Please enter a valid station code.")
+        raise ValueError("Please enter a valid station code.")
 
 
 def maps():

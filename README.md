@@ -11,7 +11,7 @@ Take a look at the Jupyter Notebooks tutorials in the examples directory to lear
 ```
 influxdb_client==1.32.0
 pandas==1.4.3
-pyet==1.1.0
+pyet=1.1.0
 ```
 
 ## :gear: Installation
