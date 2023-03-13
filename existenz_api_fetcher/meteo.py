@@ -29,7 +29,6 @@ def rainfall(station: str):
                                        f'|> filter(fn: (r) => r["loc"] == "{station}")'
                                        '|> filter(fn: (r) => r["_field"] == "rr")'
                                        '|> aggregateWindow(every: 1d, fn: sum, createEmpty: true)'
-                                       '|> cumulativeSum(columns: ["_value"])'
                                        '|> yield(name: "cumulative_sum")'
                                        )
     rr_df = pipelines.preprocess(rr_df)
