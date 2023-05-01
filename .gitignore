@@ -3,4 +3,5 @@
 /build
 /dist/
 /existenz_api_fetcher.egg-info/
-/test.py
+/venv/
+/existenz_api_fetcher/test.py

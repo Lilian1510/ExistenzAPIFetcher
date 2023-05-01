@@ -1,4 +1,5 @@
 import pandas as pd
+import geopandas as gpd
 
 
 def geolocate(station: str) -> list:
@@ -20,7 +21,19 @@ def geolocate(station: str) -> list:
         raise ValueError("Please enter a valid station code.")
 
 
-def maps():
+def show_maps() -> None:
+    """
+    In process...
+    """
+    meteo_df = pd.read_csv('https://api-datasette.konzept.space/existenz-api/smn_locations.csv?_size=max')
+    hydro_df = pdf.read_csv('https://api-datasette.konzept.space/existenz-api/hydro_locations.csv?_size=max')
+    crs = {'init': 'epsg:4326'}
+    meteo_gdf = gpd.GeoDataFrame(meteo_df, crs=crs).set_geometry('geometry')
+    hydro_gdf = gpd.GeoDataFrame(hydro_df, crs=crs).set_geometry('geometry')
+    print(meteo_gdf)
+
+
+def maps() -> None:
     """
     Function to help find the station code using a map.
     Prints two clickable links, one for the MeteoSwiss stations, one for the FOEN ones
