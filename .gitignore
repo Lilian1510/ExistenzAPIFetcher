@@ -1,8 +1,8 @@
+/.idea/
 /.ipynb_checkpoints/
-/examples/.ipynb_checkpoints/
 /build
 /dist/
+/examples/.ipynb_checkpoints/
 /existenz_api_fetcher.egg-info/
+/existez_api_fetcher/__pycache__
 /venv/
-/existenz_api_fetcher/test.py
-.idea/

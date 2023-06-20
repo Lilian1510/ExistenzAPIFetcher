@@ -1,9 +1,9 @@
 from functools import reduce
-
+from typing import Union
 import pandas as pd
 
 
-def preprocess(df):
+def preprocess(df: pd.DataFrame) -> Union[None, pd.DataFrame]:
     """
     Batch processes a DataFrame to make it easier to use.
     Args: DataFrame
@@ -22,7 +22,7 @@ def preprocess(df):
         return df
 
 
-def compute(df):
+def compute(df: pd.DataFrame) -> Union[None, pd.DataFrame]:
     """
     Generates a dataframe from an existing one.
     Args: DataFrame
@@ -38,7 +38,7 @@ def compute(df):
         return new_df
 
 
-def merge(*args):
+def merge(*args) -> Union[None, pd.DataFrame]:
     """
     Function to merge DataFrames.
     *Args: Dataframes

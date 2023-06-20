@@ -1,8 +1,9 @@
 import warnings
-
+from typing import Union
+import pandas as pd
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.warnings import MissingPivotFunction
-from pyet import penman, pm, pm_fao56
+from pyet import penman, pm, pm_fao56, deg_to_rad
 
 from existenz_api_fetcher import pipelines
 
@@ -17,7 +18,7 @@ client = InfluxDBClient(url=url, token=token, org=org)
 query_api = client.query_api()
 
 
-def rainfall(station: str):
+def rainfall(station: str) -> pd.DataFrame:
     """
     Returns 2 years of rainfall [mm/day] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -35,7 +36,7 @@ def rainfall(station: str):
     return rr_df
 
 
-def temperature(station: str):
+def temperature(station: str) -> pd.DataFrame:
     """
     Returns 2 years of mean temperature [°C] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -53,7 +54,7 @@ def temperature(station: str):
     return tt_df
 
 
-def min_temperature(station: str):
+def min_temperature(station: str) -> pd.DataFrame:
     """
     Returns 2 years of minimum temperature [°C] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -71,7 +72,7 @@ def min_temperature(station: str):
     return mintt_df
 
 
-def max_temperature(station: str):
+def max_temperature(station: str) -> pd.DataFrame:
     """
     Returns 2 years of maximum temperature [°C] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -90,7 +91,7 @@ def max_temperature(station: str):
     return maxtt_df
 
 
-def humidity(station: str):
+def humidity(station: str) -> pd.DataFrame:
     """
     Returns 2 years of relative humidity [%] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -107,7 +108,7 @@ def humidity(station: str):
     return rh_df
 
 
-def wind_speed(station: str):
+def wind_speed(station: str) -> pd.DataFrame:
     """
     Returns 2 years of wind speed [km/h] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -125,9 +126,9 @@ def wind_speed(station: str):
     return ff_df
 
 
-def radiation(station: str):
+def radiation(station: str) -> pd.DataFrame:
     """
-    Returns 2 years of radiation intensity [W/m2] data in the form of a pandas dataframe.
+    Returns 2 years of radiation intensity [W/m2] (ten minutes mean) data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
     Returns: DataFrame with a datetime index
     """
@@ -141,11 +142,11 @@ def radiation(station: str):
                                         )
     rad_df = pipelines.preprocess(rad_df)
     # Convert from W/m2 to MJ/m2/d
-    rad_df['_value'] = rad_df['_value'] * 10e-6 * 60*60*24
+    rad_df['_value'] = rad_df['_value'] * 10/60/24 * 10e-6
     return rad_df
 
 
-def pressure(station: str):
+def pressure(station: str) -> pd.DataFrame:
     """
     Returns 2 years of pressure at station level [hPa] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -163,7 +164,7 @@ def pressure(station: str):
     return qfe_df
 
 
-def sunshine_duration(station: str):
+def sunshine_duration(station: str) -> pd.DataFrame:
     """
     Returns 2 years of sunshine duration [min] data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -181,7 +182,7 @@ def sunshine_duration(station: str):
     return ss_df
 
 
-def dew_point(station: str):
+def dew_point(station: str) -> pd.DataFrame:
     """
     Returns 2 years of dew point (2 m above ground) data in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -199,7 +200,7 @@ def dew_point(station: str):
     return td_df
 
 
-def ev_penman(station: str, elevation: int, lat: float):
+def ev_penman(station: str, elevation: int, lat: float) -> Union[None, pd.DataFrame]:
     """
     Returns 2 years of potential evapotranspiration data (computed according to Penman (1948)) in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -213,14 +214,14 @@ def ev_penman(station: str, elevation: int, lat: float):
         # Compute potential evaporation with Penman equation
         ev = penman(tmean=temperature(station)['_value'], wind=wind_speed(station)['_value'],
                     rs=radiation(station)['_value'], elevation=elevation,
-                    lat=lat, tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
+                    lat=deg_to_rad(lat), tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
                     rh=humidity(station)['_value'])
         # Interpolate missing data
         penman_df['_value'] = ev.interpolate()
         return penman_df
 
 
-def ev_penman_monteith(station: str, elevation: int, lat: float):
+def ev_penman_monteith(station: str, elevation: int, lat: float) -> Union[None, pd.DataFrame]:
     """
     Returns 2 years of potential evapotranspiration data (computed according to Monteith (1965)) in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -234,14 +235,14 @@ def ev_penman_monteith(station: str, elevation: int, lat: float):
         # Compute potential evaporation with Penman-Monteith equation
         ev = pm(tmean=temperature(station)['_value'], wind=wind_speed(station)['_value'],
                 rs=radiation(station)['_value'], elevation=elevation,
-                lat=lat, tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
+                lat=deg_to_rad(lat), tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
                 rh=humidity(station)['_value'])
         # Interpolate missing data
         pm_df['_value'] = ev.interpolate()
         return pm_df
 
 
-def ev_fao56(station: str, elevation: int, lat: float):
+def ev_fao56(station: str, elevation: int, lat: float) ->  Union[None, pd.DataFrame]:
     """
     Returns 2 years of potential evapotranspiration data (computed according to Allen et al. (1998)) in the form of a pandas dataframe.
     Args: MeteoSwiss station code (str). Use the locations.map() function to open a map with all the stations for more info.
@@ -255,7 +256,7 @@ def ev_fao56(station: str, elevation: int, lat: float):
         # Compute potential evaporation with Fao56 equation
         ev = pm_fao56(tmean=temperature(station)['_value'], wind=wind_speed(station)['_value'],
                       rs=radiation(station)['_value'], elevation=elevation,
-                      lat=lat, tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
+                      lat=deg_to_rad(lat), tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
                       rh=humidity(station)['_value'])
         # Interpolate missing data
         fao_df['_value'] = ev.interpolate()

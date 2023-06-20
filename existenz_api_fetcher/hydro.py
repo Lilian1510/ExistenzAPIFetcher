@@ -1,5 +1,6 @@
 import warnings
-
+from typing import Union
+import pandas as pd
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.warnings import MissingPivotFunction
 
@@ -16,7 +17,7 @@ client = InfluxDBClient(url=url, token=token, org=org)
 query_api = client.query_api()
 
 
-def flow(station: str) -> object:
+def flow(station: str) -> Union[None, pd.DataFrame]:
     """
     Returns 2 years of streamflow [m3/s] data in the form of a pandas dataframe. Note that not all stations measure streamflow.
     Args: FOEN station code (str). Use the locations.maps() function to open a map with all the stations for more info
@@ -34,7 +35,7 @@ def flow(station: str) -> object:
     return flow_df
 
 
-def temperature(station: str) -> object:
+def temperature(station: str) -> Union[None, pd.DataFrame]:
     """
     Returns 2 years of water temperature [°C] data in the form of a pandas dataframe. Note that not all stations measure water temperature.
     Args: FOEN station code (str). Use the locations.maps() function to open a map with all the stations for more info
@@ -56,7 +57,7 @@ def temperature(station: str) -> object:
         return None
 
 
-def height(station: str) -> object:
+def height(station: str) -> Union[None, pd.DataFrame]:
     """
     Returns 2 years of River or lake height [m over sea level] data in the form of a pandas dataframe.
     Args: FOEN station code (str). Use the locations.maps() function to open a map with all the stations for more info
