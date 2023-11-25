@@ -4,12 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "existenz_api_fetcher"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
 	{name="Lilian Lonla", email="lilianlonla15@gmail.com"}
 ]
 description = "Easily fetch swiss weather and hydrological data from the Existenz API"
 readme = "README.md"
+requires-python='>=3.7'
 classifiers = [
 	"Programming Language :: Python :: 3",
 	"License :: OSI Approved :: MIT License",
