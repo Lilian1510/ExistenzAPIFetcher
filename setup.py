@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='existenz_api_fetcher',
-    version='0.1.1',
+    version='0.1.2',
     author='Lilian Lonla',
     author_email='lilianlonla15@gmail.com',
     description='Easily fetch swiss weather and hydrological data from the Existenz API',
@@ -14,11 +14,11 @@ setuptools.setup(
     url='https://github.com/Lilian1510/ExistenzAPIFetcher/',
     packages=setuptools.find_packages(),
     install_requires=[
-        'influxdb_client>=1.32.0',
-        'pandas>=2.0.2',
-        'pyet>=1.1.0',
-        'folium>=0.14.0',
-        'setuptools>=68.0.0'
+        'influxdb_client',
+        'pandas',
+        'pyet',
+        'folium',
+        'setuptools'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
