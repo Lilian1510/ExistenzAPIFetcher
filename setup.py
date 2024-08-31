@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='existenz_api_fetcher',
-    version='0.1.2',
+    version='0.1.3',
     author='Lilian Lonla',
     author_email='lilianlonla15@gmail.com',
     description='Easily fetch swiss weather and hydrological data from the Existenz API',

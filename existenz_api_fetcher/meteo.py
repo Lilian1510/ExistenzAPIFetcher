@@ -1,9 +1,10 @@
 import warnings
 from typing import Union
+import numpy as np
 import pandas as pd
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.warnings import MissingPivotFunction
-from pyet import penman, pm, pm_fao56, deg_to_rad
+from pyet import penman, pm, pm_fao56
 
 from existenz_api_fetcher import pipelines
 
@@ -214,7 +215,7 @@ def ev_penman(station: str, elevation: int, lat: float) -> Union[None, pd.DataFr
         # Compute potential evaporation with Penman equation
         ev = penman(tmean=temperature(station)['_value'], wind=wind_speed(station)['_value'],
                     rs=radiation(station)['_value'], elevation=elevation,
-                    lat=deg_to_rad(lat), tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
+                    lat=lat*np.pi/180, tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
                     rh=humidity(station)['_value'])
         # Interpolate missing data
         penman_df['_value'] = ev.interpolate()
@@ -235,7 +236,7 @@ def ev_penman_monteith(station: str, elevation: int, lat: float) -> Union[None, 
         # Compute potential evaporation with Penman-Monteith equation
         ev = pm(tmean=temperature(station)['_value'], wind=wind_speed(station)['_value'],
                 rs=radiation(station)['_value'], elevation=elevation,
-                lat=deg_to_rad(lat), tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
+                lat=lat*np.pi/180, tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
                 rh=humidity(station)['_value'])
         # Interpolate missing data
         pm_df['_value'] = ev.interpolate()
@@ -256,7 +257,7 @@ def ev_fao56(station: str, elevation: int, lat: float) ->  Union[None, pd.DataFr
         # Compute potential evaporation with Fao56 equation
         ev = pm_fao56(tmean=temperature(station)['_value'], wind=wind_speed(station)['_value'],
                       rs=radiation(station)['_value'], elevation=elevation,
-                      lat=deg_to_rad(lat), tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
+                      lat=lat*np.pi/180, tmax=max_temperature(station)['_value'], tmin=min_temperature(station)['_value'],
                       rh=humidity(station)['_value'])
         # Interpolate missing data
         fao_df['_value'] = ev.interpolate()
