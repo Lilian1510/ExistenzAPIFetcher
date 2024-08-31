@@ -9,14 +9,14 @@ def geolocate(station: str) -> list:
     """
     Function to geolocate MeteoSwiss or FOEN hydrology stations.
     Args: station code (str)
-    Returns: list with latitude, longitude, elevation (x, y, z) for MeteoSwiss and latitude, longitude (x, y) for FOEN
+    Returns: list with longitude, latitude, elevation (x, y, z) for MeteoSwiss and longitude, latitude (x, y) for FOEN
     """
     if station in meteo_df['code'].to_numpy():
         result = meteo_df[meteo_df['code'] == station]
-        return [result['lat'].to_numpy()[0], result['lon'].to_numpy()[0], result['alt'].to_numpy()[0]]
+        return [result['lon'].to_numpy()[0], result['lat'].to_numpy()[0], result['alt'].to_numpy()[0]]
     elif station in hydro_df['station_id'].to_numpy():
         result = hydro_df.loc[hydro_df['station_id'] == station]
-        return [result['lat'].to_numpy()[0], result['lon'].to_numpy()[0]]
+        return [result['lon'].to_numpy()[0], result['lat'].to_numpy()[0]]
     else:
         raise ValueError("Please enter a valid station code.")
 
